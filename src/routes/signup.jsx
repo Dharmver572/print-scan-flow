@@ -17,7 +17,7 @@ export function SignupPage() {
         setLoading(true);
         setTimeout(() => {
             setLoading(false);
-            toast.success("This is a demo — connect Lovable Cloud to enable real auth.");
+            toast.success("This is a demo — real auth is not enabled in this build.");
             navigate("/");
         }, 800);
     };

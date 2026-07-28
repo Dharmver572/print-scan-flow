@@ -22,7 +22,7 @@ export function ProblemSolution() {
             Why PrintEasy
           </div>
           <h2 className="text-4xl font-bold tracking-tight lg:text-5xl">
-            Stop printing through <span className="text-destructive line-through decoration-2">WhatsApp</span>
+            Stop printing through <span className="text-success line-through decoration-2 decoration-destructive">WhatsApp</span>
           </h2>
           <p className="mt-4 text-lg text-muted-foreground">
             The old way is messy, slow, and unsafe. Here's what changes with PrintEasy.
