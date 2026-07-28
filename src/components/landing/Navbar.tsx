@@ -1,8 +1,11 @@
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { QrCode, Menu, X } from "lucide-react";
+import { Link } from "@tanstack/react-router";
 import { Button } from "@/components/ui/button";
+import { ThemeToggle } from "@/components/theme-toggle";
 import { cn } from "@/lib/utils";
+
 
 const links = [
   { label: "Features", href: "#features" },
@@ -59,9 +62,15 @@ export function Navbar() {
         </div>
 
         <div className="hidden items-center gap-3 md:flex">
-          <button className="text-sm font-medium text-white/80 hover:text-white">Login</button>
-          <Button variant="hero" size="default">Sign Up</Button>
+          <ThemeToggle variant="dark" />
+          <Link to="/login" className="text-sm font-medium text-white/80 hover:text-white">
+            Login
+          </Link>
+          <Button variant="hero" size="default" asChild>
+            <Link to="/signup">Sign Up</Link>
+          </Button>
         </div>
+
 
         <button
           className="md:hidden text-white"
@@ -79,8 +88,15 @@ export function Navbar() {
               {l.label}
             </a>
           ))}
-          <Button variant="hero" className="w-full">Sign Up</Button>
+          <div className="flex items-center justify-between pt-2">
+            <ThemeToggle variant="dark" />
+            <Link to="/login" onClick={() => setOpen(false)} className="text-sm text-white/80">Login</Link>
+          </div>
+          <Button variant="hero" className="w-full" asChild>
+            <Link to="/signup" onClick={() => setOpen(false)}>Sign Up</Link>
+          </Button>
         </div>
+
       )}
     </motion.header>
   );
