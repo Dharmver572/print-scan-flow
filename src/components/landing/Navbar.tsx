@@ -88,8 +88,15 @@ export function Navbar() {
               {l.label}
             </a>
           ))}
-          <Button variant="hero" className="w-full">Sign Up</Button>
+          <div className="flex items-center justify-between pt-2">
+            <ThemeToggle variant="dark" />
+            <Link to="/login" onClick={() => setOpen(false)} className="text-sm text-white/80">Login</Link>
+          </div>
+          <Button variant="hero" className="w-full" asChild>
+            <Link to="/signup" onClick={() => setOpen(false)}>Sign Up</Link>
+          </Button>
         </div>
+
       )}
     </motion.header>
   );
