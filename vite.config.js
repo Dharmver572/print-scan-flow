@@ -3,6 +3,7 @@ import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import tailwindcss from "@tailwindcss/vite";
 export default defineConfig({
+      base: "/print-scan-flow/",
     plugins: [react(), tailwindcss()],
     resolve: {
         alias: {
