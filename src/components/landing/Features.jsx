@@ -11,7 +11,7 @@ const features = [
     { icon: Building2, title: "Multi Branch", desc: "Manage multiple outlets from a single account with ease.", color: "text-accent bg-accent/10" },
 ];
 export function Features() {
-    return (<section id="features" className="py-24 lg:py-32">
+    return (<section id="features" className="py-4 md:py-8">
       <div className="mx-auto max-w-7xl px-6">
         <div className="mx-auto max-w-2xl text-center">
           <div className="mb-4 inline-flex rounded-full bg-primary/10 px-3 py-1 text-xs font-medium text-primary">
@@ -25,7 +25,7 @@ export function Features() {
           </p>
         </div>
 
-        <div className="mt-16 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="mt-4 md:mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
           {features.map((f, i) => (<motion.div key={f.title} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: (i % 4) * 0.05, duration: 0.5 }} className="group rounded-2xl border border-border bg-card p-6 transition-all hover:-translate-y-1 hover:shadow-elegant hover:border-primary/30">
               <div className={`mb-4 flex h-11 w-11 items-center justify-center rounded-xl ${f.color} transition-transform group-hover:scale-110`}>
                 <f.icon className="h-5 w-5"/>

@@ -19,17 +19,17 @@ const tiers = [
     },
 ];
 export function Pricing() {
-    return (<section id="pricing" className="bg-muted/30 py-24 lg:py-32">
+    return (<section id="pricing" className="bg-muted/30 py-2 md:py-6">
       <div className="mx-auto max-w-7xl px-6">
         <div className="mx-auto max-w-2xl text-center">
           <div className="mb-4 inline-flex rounded-full bg-primary/10 px-3 py-1 text-xs font-medium text-primary">Pricing</div>
-          <h2 className="text-4xl font-bold tracking-tight lg:text-5xl">
+          <h2 className="text-3xl font-bold tracking-tight lg:text-5xl">
             Simple, <span className="text-gradient-primary">transparent</span> pricing
           </h2>
           <p className="mt-4 text-lg text-muted-foreground">Start free. Upgrade only when you're ready.</p>
         </div>
 
-        <div className="mt-16 grid gap-6 lg:grid-cols-3">
+        <div className="mt-3 md:mt-8 grid gap-6 lg:grid-cols-3">
           {tiers.map((t, i) => (<motion.div key={t.name} initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.1 }} className={`relative rounded-3xl border bg-card p-8 ${t.popular ? "border-primary shadow-elegant lg:-translate-y-4 lg:scale-[1.02]" : "border-border"}`}>
               {t.popular && (<div className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-gradient-primary px-4 py-1 text-xs font-semibold text-white shadow-glow">
                   Most Popular

@@ -2,7 +2,7 @@ import { motion } from "framer-motion";
 import { ArrowRight, QrCode } from "lucide-react";
 import { Button } from "@/components/ui/button";
 export function CTA() {
-    return (<section className="px-6 pb-24">
+    return (<section className="px-6 pb-5 py-3">
       <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="relative mx-auto max-w-6xl overflow-hidden rounded-3xl bg-gradient-hero p-10 lg:p-16 shadow-elegant">
         <div className="pointer-events-none absolute -top-20 -right-20 h-64 w-64 rounded-full bg-primary/40 blur-3xl"/>
         <div className="pointer-events-none absolute -bottom-20 -left-20 h-64 w-64 rounded-full bg-accent/30 blur-3xl"/>

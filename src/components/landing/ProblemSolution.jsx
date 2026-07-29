@@ -15,7 +15,7 @@ const solutions = [
     "Customer picks settings in the browser",
 ];
 export function ProblemSolution() {
-    return (<section id="why" className="py-24 lg:py-32">
+    return (<section id="why" className="py-2 md:py-8">
       <div className="mx-auto max-w-7xl px-6">
         <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="mx-auto max-w-2xl text-center">
           <div className="mb-4 inline-flex items-center gap-2 rounded-full bg-primary/10 px-3 py-1 text-xs font-medium text-primary">
@@ -29,7 +29,7 @@ export function ProblemSolution() {
           </p>
         </motion.div>
 
-        <div className="mt-16 grid gap-6 lg:grid-cols-2">
+        <div className="mt-4 md:mt-10 grid gap-6 lg:grid-cols-2">
           <motion.div initial={{ opacity: 0, x: -20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} className="rounded-3xl border border-destructive/20 bg-destructive/5 p-8">
             <div className="mb-6 flex items-center gap-3">
               <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-destructive/15 text-destructive">

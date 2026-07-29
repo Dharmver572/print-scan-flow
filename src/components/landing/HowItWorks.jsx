@@ -7,7 +7,7 @@ const steps = [
     { icon: Printer, title: "Ready to Print", desc: "The job appears instantly on your dashboard. Just hit print!", accent: "text-success bg-success/10" },
 ];
 export function HowItWorks() {
-    return (<section id="how" className="bg-muted/30 py-24 lg:py-32">
+    return (<section id="how" className="bg-muted/30 py-2 md:py-6">
       <div className="mx-auto max-w-7xl px-6">
         <div className="mx-auto max-w-2xl text-center">
           <div className="mb-4 inline-flex rounded-full bg-primary/10 px-3 py-1 text-xs font-medium text-primary">
@@ -18,7 +18,7 @@ export function HowItWorks() {
           </h2>
         </div>
 
-        <div className="mt-16 grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+        <div className="mt-2 md:mt-8 grid gap-6 md:grid-cols-2 lg:grid-cols-4">
           {steps.map((s, i) => (<motion.div key={s.title} initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.1, duration: 0.5 }} className="relative">
               <div className="h-full rounded-3xl border border-border bg-card p-6 shadow-soft transition-all hover:-translate-y-1 hover:shadow-elegant">
                 <div className="mb-4 flex items-center justify-between">
