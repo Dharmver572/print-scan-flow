@@ -1,112 +1,225 @@
-import { createContext, useContext, useEffect, useState } from "react";
-import api from "@/lib/api";
+
+import {
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 
 const AuthContext = createContext(null);
+
+const API_BASE_URL = "http://localhost:8081/api";
+
+const TOKEN_KEY = "printeasy_token";
+const USER_KEY = "printeasy_user";
 
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(() => {
     try {
-      const savedUser = localStorage.getItem("printeasy_user");
-      return savedUser ? JSON.parse(savedUser) : null;
+      const storedUser =
+        localStorage.getItem(USER_KEY);
+
+      return storedUser
+        ? JSON.parse(storedUser)
+        : null;
     } catch {
       return null;
     }
   });
 
+  const [token, setToken] = useState(() => {
+    return localStorage.getItem(TOKEN_KEY);
+  });
+
   const [loading, setLoading] = useState(true);
 
+  // =========================
+  // CHECK AUTH ON APP LOAD
+  // =========================
   useEffect(() => {
-    const token = localStorage.getItem("printeasy_token");
+    const storedToken =
+      localStorage.getItem(TOKEN_KEY);
 
-    if (!token) {
-      setLoading(false);
-      return;
+    const storedUser =
+      localStorage.getItem(USER_KEY);
+
+    if (storedToken) {
+      setToken(storedToken);
+    }
+
+    if (storedUser) {
+      try {
+        setUser(JSON.parse(storedUser));
+      } catch {
+        localStorage.removeItem(USER_KEY);
+      }
     }
 
     setLoading(false);
   }, []);
 
-  const login = async (email, password, rememberMe = true) => {
-    const response = await api.login({
-      email,
-      password,
-    });
+  // =========================
+  // REGISTER
+  // =========================
+  const register = async (
+    name,
+    email,
+    password
+  ) => {
+    const response = await fetch(
+      `${API_BASE_URL}/auth/register`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name,
+          email,
+          password,
+        }),
+      }
+    );
 
-    const data = response?.data;
+    let data = null;
 
-    if (!data) {
-      throw new Error("Invalid login response from server");
+    try {
+      data = await response.json();
+    } catch {
+      data = null;
     }
 
-    const token =
-      data.token ||
-      data.accessToken ||
-      data.jwt ||
-      data.access_token;
-
-    if (!token) {
-      throw new Error("JWT token was not returned by server");
+    if (!response.ok) {
+      throw new Error(
+        data?.message ||
+          data?.error ||
+          "Registration failed"
+      );
     }
 
-    const userData = {
-      userId: data.userId,
-      name: data.name,
-      email: data.email,
-      role: data.role,
-      shopId: data.shopId ?? null,
-      shopName: data.shopName ?? null,
-      shopCode: data.shopCode ?? null,
-    };
+    return data;
+  };
 
-    if (rememberMe) {
-      localStorage.setItem("printeasy_token", token);
+  // =========================
+  // LOGIN
+  // =========================
+  const login = async (
+    email,
+    password,
+    rememberMe = true
+  ) => {
+    const response = await fetch(
+      `${API_BASE_URL}/auth/login`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email,
+          password,
+        }),
+      }
+    );
+
+    let data = null;
+
+    try {
+      data = await response.json();
+    } catch {
+      data = null;
+    }
+
+    if (!response.ok) {
+      throw new Error(
+        data?.message ||
+          data?.error ||
+          "Login failed"
+      );
+    }
+
+    // =========================
+    // GET TOKEN
+    // =========================
+    const accessToken =
+      data?.data?.token ||
+      data?.token ||
+      data?.data?.accessToken ||
+      data?.accessToken;
+
+    if (!accessToken) {
+      throw new Error(
+        "Login successful but authentication token was not received."
+      );
+    }
+
+    // =========================
+    // GET USER
+    // =========================
+    const loggedInUser =
+      data?.data?.user ||
+      data?.user ||
+      data?.data;
+
+    // =========================
+    // SAVE TOKEN
+    // IMPORTANT:
+    // Same key is used by api.js
+    // =========================
+    localStorage.setItem(
+      TOKEN_KEY,
+      accessToken
+    );
+
+    setToken(accessToken);
+
+    // =========================
+    // SAVE USER
+    // =========================
+    if (
+      loggedInUser &&
+      typeof loggedInUser === "object"
+    ) {
       localStorage.setItem(
-        "printeasy_user",
-        JSON.stringify(userData)
+        USER_KEY,
+        JSON.stringify(loggedInUser)
       );
-    } else {
-      sessionStorage.setItem("printeasy_token", token);
-      sessionStorage.setItem(
-        "printeasy_user",
-        JSON.stringify(userData)
-      );
+
+      setUser(loggedInUser);
     }
 
-    setUser(userData);
-
-    return response;
+    return data;
   };
 
-  const register = async (name, email, password) => {
-    return api.register({
-      name,
-      email,
-      password,
-    });
-  };
-
+  // =========================
+  // LOGOUT
+  // =========================
   const logout = () => {
-    localStorage.removeItem("printeasy_token");
-    localStorage.removeItem("printeasy_user");
+    localStorage.removeItem(TOKEN_KEY);
+    localStorage.removeItem(USER_KEY);
 
-    sessionStorage.removeItem("printeasy_token");
-    sessionStorage.removeItem("printeasy_user");
+    // Remove old key also
+    localStorage.removeItem("token");
 
+    setToken(null);
     setUser(null);
   };
 
+  // =========================
+  // AUTHENTICATION STATUS
+  // =========================
   const isAuthenticated =
-    !!localStorage.getItem("printeasy_token") ||
-    !!sessionStorage.getItem("printeasy_token");
+    Boolean(token);
 
   return (
     <AuthContext.Provider
       value={{
         user,
+        token,
         loading,
         isAuthenticated,
-        login,
         register,
+        login,
         logout,
       }}
     >
@@ -115,8 +228,12 @@ export function AuthProvider({ children }) {
   );
 }
 
+// =========================
+// USE AUTH
+// =========================
 export function useAuth() {
-  const context = useContext(AuthContext);
+  const context =
+    useContext(AuthContext);
 
   if (!context) {
     throw new Error(
@@ -126,3 +243,4 @@ export function useAuth() {
 
   return context;
 }
+

@@ -5,11 +5,14 @@ import { Toaster } from "@/components/ui/sonner";
 
 import { AuthProvider } from "@/context/AuthContext";
 import { ProtectedRoute } from "@/components/auth/ProtectedRoute";
+import { CustomerUploadPage } from "@/pages/customer/CustomerUploadPage";
 
 import { HomePage } from "./routes/index";
 import { LoginPage } from "./routes/login";
 import { SignupPage } from "./routes/signup";
-import { DashboardPage } from "./routes/dashboard";
+import { DashboardPage } from "./routes/dashboard"; 
+import { ShopPage } from "./pages/ShopPage";
+
 
 function App() {
   return (
@@ -42,7 +45,20 @@ function App() {
             path="*"
             element={<Navigate to="/" replace />}
           />
+          <Route
+          path="/shop"
+          element={<ShopPage />}
+        />
+        
+        <Route
+          path="/upload"
+          element={<CustomerUploadPage />}
+        />
+
+
         </Routes>
+
+        
 
         <Toaster />
       </AuthProvider>
